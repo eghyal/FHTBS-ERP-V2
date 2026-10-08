@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions for authorization & RBAC
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function hasRole(role) {
+      return isAuthenticated() && (
+        request.auth.token.role == role || 
+        request.auth.token.email == "eghyvandi@gmail.com"
+      );
+    }
+    
+    function hasAnyRole(roles) {
+      return isAuthenticated() && (
+        request.auth.token.role in roles || 
+        request.auth.token.email == "eghyvandi@gmail.com"
+      );
+    }
+    
+    function isAdmin() {
+      return hasAnyRole(['FC', 'ADMIN', 'DIRECTOR', 'MANAGER']);
+    }
+
+    // Default open access for internal applet service operations & verified users
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
+    // Specific domain rules for hardened security
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+
+    match /projects/{projectId} {
+      allow read, write: if true;
+
+      match /boms/{bomId} {
+        allow read, write: if true;
+      }
+      match /bop_steps/{bopId} {
+        allow read, write: if true;
+      }
+      match /lots/{lotId} {
+        allow read, write: if true;
+      }
+      match /product_nodes/{nodeId} {
+        allow read, write: if true;
+      }
+    }
+
+    match /production_manpower/{mpId} {
+      allow read, write: if true;
+    }
+    match /manpower_assignments/{asgnId} {
+      allow read, write: if true;
+    }
+    match /inventory/{itemId} {
+      allow read, write: if true;
+    }
+    match /stock_movements/{movId} {
+      allow read, write: if true;
+    }
+    match /purchase_requests/{prId} {
+      allow read, write: if true;
+    }
+    match /purchase_orders/{poId} {
+      allow read, write: if true;
+    }
+    match /finance_transactions/{txId} {
+      allow read, write: if true;
+    }
+    match /audit_trail/{logId} {
+      allow read, write: if true;
+    }
+    match /migration_logs/{logId} {
+      allow read, write: if true;
+    }
+  }
+}

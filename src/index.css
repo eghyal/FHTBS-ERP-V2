@@ -1,0 +1,423 @@
+/* Font dimuat sekali melalui <link> di index.html (Plus Jakarta Sans + JetBrains Mono).
+   @import ganda di sini sebelumnya memuat ulang font yang sama beserta
+   Inter & Playfair Display yang tidak pernah dipakai — sudah dihilangkan. */
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes scan {
+  0%, 100% { top: 0%; opacity: 0; }
+  50% { top: 100%; opacity: 1; }
+}
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Theme: Grey, White, Black (Minimalist/Elegant) */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+  --color-stone-950: #0c0a09;
+  
+  /* Retain original functional colors */
+  --color-red-500: #ef4444;
+  --color-amber-500: #f59e0b;
+  --color-emerald-500: #10b981;
+  --color-blue-500: #3b82f6;
+  
+  --color-paving-red: #B22222;
+  --color-paving-yellow: #FFD700;
+
+  /*
+   * Brand Palette (sumber kebenaran tunggal warna brand).
+   * Sebelumnya warna ini di-hardcode sebagai arbitrary value
+   * (mis. bg-brand) di 300+ lokasi dengan 5 shade gelap
+   * yang tidak konsisten. Gunakan token berikut:
+   *   bg-brand / text-brand / border-brand / ring-brand
+   *   hover:bg-brand-dark, dst.
+   */
+  --color-brand: #b02524;
+  --color-brand-dark: #961f1e;
+  --color-brand-darker: #7e1a19;
+  --color-brand-light: #d45a59;
+  --color-brand-soft: #fdf2f2;
+}
+
+/* Global visual refinements */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafaf9; /* stone-50 */
+  -webkit-text-size-adjust: 100%; /* Prevent Android Chrome font boosting */
+  text-size-adjust: 100%;
+}
+
+/* Comprehensive Viewport Density Architecture */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 639px) {
+  html {
+    font-size: 15px; /* Comfortable, crisp density for mobile */
+  }
+}
+
+/* Touch and Responsive Table Rules */
+@media (max-width: 768px) {
+  th {
+    padding: 0.75rem 0.875rem !important;
+    font-size: 0.6875rem !important; /* 11px */
+  }
+
+  td {
+    padding: 0.75rem 0.875rem !important;
+    font-size: 0.8125rem !important; /* 13px */
+  }
+
+  .table-container, .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+input, textarea, select {
+  -webkit-user-select: auto;
+  user-select: auto;
+  cursor: text;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+/* Elegant card style - refined */
+@layer components {
+  .input-elegant, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not(.no-base-style), textarea:not(.no-base-style), select:not(.no-base-style) {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    background-color: white;
+    border: 1px solid #e7e5e4;
+    border-radius: 0.75rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.875rem;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.02);
+  }
+
+  .input-elegant:focus, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not(.no-base-style):focus, textarea:not(.no-base-style):focus, select:not(.no-base-style):focus {
+    border-color: #d6d3d1;
+    box-shadow: 0 0 0 4px rgba(28, 25, 23, 0.03); /* stone-900/5 */
+  }
+
+  .card-elegant {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .card-elegant:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+button.bg-stone-900 {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(28, 25, 23, 0.1), 0 2px 4px -2px rgba(28, 25, 23, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button.bg-stone-900:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(28, 25, 23, 0.15), 0 4px 6px -4px rgba(28, 25, 23, 0.1);
+}
+
+button.bg-stone-900:active {
+  transform: translateY(1px);
+}
+
+/* Elegant Table Adjustments */
+table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background-color: #fafaf9; /* stone-50 */
+}
+
+th {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 800;
+  color: #78716c; /* stone-500 */
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid #e7e5e4; /* stone-200 */
+}
+
+td {
+  padding: 0.875rem 1.25rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f5f5f4; /* stone-100 */
+  font-size: 0.875rem; /* 14px */
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #fafaf9; /* stone-50 */
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  text-align: center;
+  background-color: #fafaf9;
+  border: 1px dashed #d6d3d1;
+  border-radius: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.custom-scrollbar::-webkit-scrollbar,
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  background: #e7e5e4; /* stone-200 */
+  border-radius: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:hover {
+  background: #d6d3d1; /* stone-300 */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print optimization */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0mm;
+  }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: white !important;
+  }
+  .print-header-group {
+    display: table-header-group;
+  }
+  .print-footer-group {
+    display: table-footer-group;
+  }
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-area {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Clock Wipe Animation Utilities */
+@keyframes clockWipeRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-clock-wipe-spin {
+  animation: clockWipeRotate 4s linear infinite;
+}
+
+.clock-wipe-ring {
+  transition: stroke-dashoffset 0.5s ease-in-out;
+}
+
+/* ── Keyframes & Utilities: 3D Motion Mascot ────────────────── */
+@keyframes mascot-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(-0.5deg); }
+  50% { transform: translate3d(0, -1.4%, 0) rotateZ(0.5deg); }
+}
+
+@keyframes shadow-breathe {
+  0%, 100% { transform: translate3d(-50%, 0, 0) scaleX(1); opacity: 0.35; }
+  50% { transform: translate3d(-50%, 0, 0) scaleX(0.86); opacity: 0.22; }
+}
+
+@keyframes board-pop {
+  0% { transform: scale(0.92) rotate(-1.5deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes word-in {
+  0% { transform: translate3d(0, 110%, 0) rotate(4deg); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+}
+
+@keyframes badge-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes head-sway {
+  0%, 100% { transform: rotate(-1deg) translate3d(0, 0, 0); }
+  50% { transform: rotate(1.15deg) translate3d(0, -0.35%, 0); }
+}
+
+@keyframes head-nod {
+  0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+  28% { transform: rotate(-2.1deg) translate3d(0, 0.5%, 0); }
+  58% { transform: rotate(0.9deg) translate3d(0, -0.1%, 0); }
+  100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+}
+
+@keyframes arm-sway {
+  0%, 100% { transform: rotate(0.4deg) translate3d(0, 0, 0); }
+  50% { transform: rotate(-1deg) translate3d(0, 0, 0); }
+}
+
+@keyframes arm-point {
+  0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+  22% { transform: rotate(3.1deg) translate3d(0, 0, 0); }
+  42% { transform: rotate(0.7deg) translate3d(0, 0, 0); }
+  62% { transform: rotate(2.2deg) translate3d(0, 0, 0); }
+  100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+}
+
+.animate-mascot-float { animation: mascot-float 5.5s cubic-bezier(0.2, 1, 0.2, 1) infinite; }
+.animate-shadow-breathe { animation: shadow-breathe 5.5s cubic-bezier(0.2, 1, 0.2, 1) infinite; }
+.animate-board-pop { animation: board-pop 0.55s cubic-bezier(0.2, 1, 0.2, 1) both; }
+.animate-word-in { animation: word-in 0.5s cubic-bezier(0.2, 1, 0.2, 1) both; }
+.animate-badge-blink { animation: badge-blink 2.4s ease-in-out infinite; }
+.animate-head-sway {
+  animation: head-sway 6.8s ease-in-out infinite;
+  transform-origin: 34.81% 49.82%;
+}
+.animate-head-nod {
+  animation: head-nod 0.85s cubic-bezier(0.2, 1, 0.2, 1);
+  transform-origin: 34.81% 49.82%;
+}
+.animate-arm-sway {
+  animation: arm-sway 5.2s ease-in-out infinite;
+  transform-origin: 20.17% 51.6%;
+}
+.animate-arm-point {
+  animation: arm-point 1s cubic-bezier(0.2, 1, 0.2, 1);
+  transform-origin: 20.17% 51.6%;
+}
+
+.mascot-stage {
+  container: mascot / inline-size;
+  perspective: 1200px;
+}
+.preserve-3d,
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* 
+ * Keyframe Animasi Lambaian Tangan Maskot (Seamless 3D Wave)
+ * KUNCI PERBAIKAN:
+ * Mempertahankan kedalaman translateZ (36px) di seluruh siklus frame,
+ * sehingga tangan tidak pernah melompat keluar dari layer 3D-nya.
+ */
+@keyframes mascot-wave {
+  0% {
+    transform: translate3d(0, 0, 36px) rotate(0deg);
+  }
+  15% {
+    transform: translate3d(0, -3px, 36px) rotate(-20deg);
+  }
+  30% {
+    transform: translate3d(0, 2px, 36px) rotate(16deg);
+  }
+  45% {
+    transform: translate3d(0, -2px, 36px) rotate(-18deg);
+  }
+  60% {
+    transform: translate3d(0, 1px, 36px) rotate(12deg);
+  }
+  75% {
+    transform: translate3d(0, -1px, 36px) rotate(-10deg);
+  }
+  88% {
+    transform: translate3d(0, 0px, 36px) rotate(4deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 36px) rotate(0deg);
+  }
+}
+
+.animate-mascot-wave {
+  animation: mascot-wave 2.4s ease-in-out infinite;
+}
+
+.board-overlay {
+  display: none;
+}
+.board-fallback {
+  display: block;
+}
+
+@container mascot (min-width: 380px) {
+  .board-overlay {
+    display: block;
+  }
+  .board-fallback {
+    display: none;
+  }
+}
+
+
+

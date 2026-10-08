@@ -1,0 +1,11 @@
+node_modules/
+uploads/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+data/
+*.db
+*.sqlite
+*.sqlite3
